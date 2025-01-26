@@ -1,0 +1,19 @@
+
+{
+    "id": 198701,
+    "category": {
+      "id": 1,
+      "name": "cachorro"
+    },
+    "name": "Julien",
+    "photoUrls": [
+      ""
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "vacinado"
+      }
+    ],
+    "status": "sold"
+  }

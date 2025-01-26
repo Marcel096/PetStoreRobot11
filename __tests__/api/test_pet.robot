@@ -33,8 +33,58 @@ Post Pet
     Log To Console    ${response_body}
 
     Status Should Be    200
-    Should Be Equal    ${response_body}[id]    ${{int($id)}}
-    Should Be Equal    ${response_body}[tags][0][id]    ${{(${tag}[id])}}
+    Should Be Equal    ${response_body}[id]               ${{int($id)}}
+    Should Be Equal    ${response_body}[tags][0][id]      ${{(${tag}[id])}}
     Should Be Equal    ${response_body}[tags][0][name]    ${tag}[name]
-    Should Be Equal    ${response_body}[name]    ${name}
-    Should Be Equal    ${response_body}[status]    ${status}
+    Should Be Equal    ${response_body}[name]             ${name}
+    Should Be Equal    ${response_body}[status]           ${status}
+
+Get Pet
+    # Executa
+    ${response}    GET    ${{$url + '/' + $id}}
+    
+    # Valida
+    ${response_body}    Set Variable    ${response.json()}
+    Log To Console    ${response_body}
+
+    Status Should Be    200
+    Should Be Equal    ${response_body}[id]                 ${{int($id)}}
+    Should Be Equal    ${response_body}[category][id]       ${{int(${category}[id])}}
+    Should Be Equal    ${response_body}[category][name]     ${category}[name]
+    Should Be Equal    ${response_body}[name]               ${name}
+    Should Be Equal    ${response_body}[tags][0][id]        ${{int(${tag}[id])}}
+    Should Be Equal    ${response_body}[tags][0][name]      ${tag}[name]
+    Should Be Equal    ${response_body}[status]             ${status}
+
+Put Pet
+    # Montar a mensagem / Chamar o arquivo json
+    ${body}    Evaluate    json.loads(open('./fixtures/json/pet.json').read())
+
+    # Executa
+    ${response}    PUT    url=${url}    json=${body}
+
+    # Valida
+    ${response_body}    Set Variable    ${response.json()}
+    Log To Console    ${response_body}
+
+    Status Should Be    200
+    Should Be Equal    ${response_body}[id]                ${{int($id)}}
+    Should Be Equal    ${response_body}[category][id]      ${{int(${category}[id])}}
+    Should Be Equal    ${response_body}[category][name]    ${category}[name]
+    Should Be Equal    ${response_body}[name]              ${name}
+    Should Be Equal    ${response_body}[tags][0][id]       ${{int(${tag}[id])}}
+    Should Be Equal    ${response_body}[tags][0][name]     ${tag}[name]
+    Should Be Equal    ${response_body}[status]            ${body}[status]
+
+Delete Pet
+    # Executa
+    ${response}    DELETE    ${{$url + '/' +$id}}
+    
+    # Valida
+    ${response_body}    Set Variable    ${response.json()}
+    Log To Console    ${response_body}
+    
+    Status Should Be    200
+    Should Be Equal    ${response_body}[code]    ${{int(200)}}
+    Should Be Equal    ${response_body}[type]    ${type}
+    Should Be Equal    ${response_body}[message]    ${id}
